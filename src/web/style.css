@@ -266,19 +266,39 @@ main:focus {
   filter: drop-shadow(4px 5px 0 var(--sombra-riso));
   animation: entrar-plato 1.2s 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+/* Nota a mano abajo a la izquierda, fuera del círculo, con la flecha hacia el plato. */
+/* En modo oscuro la sombra corrida (de impresión) se ve como un borde sucio: va una sombra suave. */
+:root[data-tema="oscuro"] .portada-taza,
+:root[data-tema="oscuro"] .portada-plato,
+:root[data-tema="oscuro"] .portada-rama {
+  filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.35));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .portada-taza,
+  :root:not([data-tema="claro"]) .portada-plato,
+  :root:not([data-tema="claro"]) .portada-rama {
+    filter: drop-shadow(0 8px 14px rgb(0 0 0 / 0.35));
+  }
+}
+
 .portada-nota {
   position: absolute;
-  left: 0;
-  bottom: 6%;
+  left: 2%;
+  bottom: -3%;
   z-index: 4;
-  max-width: 13ch;
-  font-size: clamp(1.25rem, 4.6vw, 1.7rem);
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  font-size: clamp(1.15rem, 4.2vw, 1.55rem);
+  line-height: 1.05;
   color: var(--terracota);
-  transform: rotate(-7deg);
+  transform: rotate(-4deg);
 }
+.portada-nota span { max-width: 9ch; }
 .portada-nota .flecha {
-  width: 64px;
-  margin: 2px 0 0 52%;
+  flex: none;
+  width: clamp(48px, 12vw, 70px);
+  margin-bottom: 0.4em;
 }
 .sello {
   position: absolute;

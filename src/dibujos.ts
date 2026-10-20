@@ -94,7 +94,7 @@ function medialuna(x = 0, y = 0, rot = 0, escala = 1, color = "var(--d-dorado)")
 const DIBUJOS_PIEZA: Record<Pieza, () => string> = {
   medialuna: () => plato() + medialuna(0, 6),
   medialunas: () =>
-    plato() + medialuna(-6, -12, -14, 0.78) + medialuna(10, 14, 12, 0.78) + medialuna(-14, 20, 160, 0.66),
+    plato() + medialuna(-12, -10, -12, 0.66) + medialuna(14, -2, 14, 0.66) + medialuna(-2, 20, -4, 0.66),
   croissant: () =>
     plato() +
     medialuna(0, 6, 0, 1.15, "var(--d-dorado-osc)") +
