@@ -1,0 +1,368 @@
+/* Carta del salón de Café Almendra: la carta impresa de la mesa, en el celular. Una columna de
+   papel crema con arcos, pestañas pegadas arriba y los desayunos destacados en verde. */
+
+:root {
+  --bosque: #2f5d50;
+  --sobre-bosque: #f6efe2;
+  --col: 640px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --bosque: #1b2e28;
+    --sobre-bosque: #f1e9da;
+  }
+}
+:root[data-tema="oscuro"] {
+  --bosque: #1b2e28;
+  --sobre-bosque: #f1e9da;
+}
+
+body {
+  background: var(--fondo);
+}
+@media (min-width: 760px) {
+  body {
+    background:
+      radial-gradient(circle at 0% 0%, var(--acento-suave), transparent 40%),
+      radial-gradient(circle at 100% 100%, var(--flor-suave), transparent 40%),
+      var(--fondo);
+    background-attachment: fixed;
+  }
+}
+
+/* ---------- Tapa ---------- */
+.tapa {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 12px 20px 0;
+  text-align: center;
+}
+.tapa-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tapa-isotipo {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+.tapa-barra .estado {
+  font-size: 0.8rem;
+}
+.tapa-portada {
+  position: relative;
+  padding: 24px 0 6px;
+}
+.tapa-rama {
+  width: min(78%, 360px);
+  margin: 0 auto -18px;
+  transform: rotate(-3deg);
+  filter: drop-shadow(2px 2px 0 var(--sombra-riso));
+}
+.tapa-volanta {
+  font-size: 1.6rem;
+  color: var(--terracota);
+  transform: rotate(-3deg);
+}
+.tapa-nombre {
+  font-size: clamp(3.2rem, 15vw, 5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  font-variation-settings: "SOFT" 100, "opsz" 144;
+}
+.tapa-nombre em {
+  color: var(--marca);
+  font-variation-settings: "SOFT" 100, "WONK" 1, "opsz" 144;
+}
+.tapa-sub {
+  margin-top: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+}
+.mozo {
+  display: inline-block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--acento);
+  color: #2a2620;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  transform: rotate(-1.5deg);
+}
+.mozo strong {
+  font-weight: 600;
+}
+
+/* ---------- Pestañas ---------- */
+.pestanas-caja {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin-top: 26px;
+  background: color-mix(in srgb, var(--fondo) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-block: 1px solid var(--linea);
+}
+.pestanas {
+  position: relative;
+  display: flex;
+  gap: 6px;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 10px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+@media (min-width: 760px) {
+  .pestanas {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+.pestanas::-webkit-scrollbar {
+  display: none;
+}
+.pestanas a {
+  flex: none;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--linea-fuerte);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.pestanas a.activa {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fondo);
+}
+
+html {
+  scroll-padding-top: 70px;
+}
+
+/* ---------- Carta ---------- */
+.carta {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 12px 20px 24px;
+}
+.categoria {
+  padding-top: 40px;
+}
+.categoria-cabeza {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 0 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--texto);
+}
+.categoria-numero {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--terracota);
+}
+.categoria-titulo {
+  font-size: clamp(1.9rem, 8vw, 2.5rem);
+  font-weight: 400;
+  font-style: italic;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+.categoria-nota {
+  grid-column: 2;
+  font-size: 1.3rem;
+  color: var(--texto-suave);
+}
+
+.platos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.plato {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 16px 0;
+  border-bottom: 1px dashed var(--linea-fuerte);
+}
+.plato:last-child {
+  border-bottom: 0;
+}
+.plato-texto {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+.plato-linea {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 500;
+}
+.plato-nombre {
+  font-size: 1.22rem;
+  line-height: 1.15;
+}
+.plato-precio {
+  flex: none;
+  font-family: var(--sans);
+  font-size: 1.02rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.plato-desc {
+  font-size: 0.93rem;
+  color: var(--texto-suave);
+}
+.plato.agotado .imagen > * {
+  filter: grayscale(0.85);
+  opacity: 0.5;
+}
+.plato.agotado .plato-nombre,
+.plato.agotado .plato-precio {
+  color: var(--texto-suave);
+}
+
+/* Desayunos y meriendas: la página verde de la carta. */
+.categoria-destacada {
+  margin: 44px -20px 0;
+  padding: 32px 20px 20px;
+  background: var(--bosque);
+  color: var(--sobre-bosque);
+  border-radius: 28px;
+  --texto: var(--sobre-bosque);
+  --texto-suave: color-mix(in srgb, var(--sobre-bosque) 78%, transparent);
+  --linea-fuerte: color-mix(in srgb, var(--sobre-bosque) 35%, transparent);
+  --terracota: var(--flor);
+}
+@media (min-width: 680px) {
+  .categoria-destacada {
+    margin-inline: 0;
+    padding-inline: 28px;
+  }
+}
+.categoria-destacada .categoria-titulo {
+  color: var(--acento);
+}
+.destacada-nota {
+  margin-top: 12px;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+.categoria-destacada .plato {
+  grid-template-columns: 104px minmax(0, 1fr);
+}
+.categoria-destacada .imagen {
+  background: color-mix(in srgb, var(--sobre-bosque) 88%, var(--bosque));
+}
+.categoria-destacada .plato-nombre {
+  font-size: 1.4rem;
+  font-style: italic;
+}
+.categoria-destacada .etiqueta {
+  color: var(--sobre-bosque);
+}
+
+/* ---------- Para llevar ---------- */
+.a-casa {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 18px;
+  align-items: center;
+  max-width: calc(var(--col) - 40px);
+  margin: 32px auto 0;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1.5px solid var(--texto);
+  background: var(--papel);
+  box-shadow: 6px 6px 0 var(--sombra-riso);
+}
+@media (max-width: 680px) {
+  .a-casa {
+    margin-inline: 20px;
+  }
+}
+.a-casa-dibujo {
+  align-self: start;
+  border-radius: 50%;
+  background: var(--marca-suave);
+}
+.a-casa-volanta {
+  font-size: 1.35rem;
+  color: var(--terracota);
+}
+.a-casa h2 {
+  font-size: 1.7rem;
+  font-weight: 400;
+}
+.a-casa h2 em {
+  color: var(--marca);
+}
+.a-casa p:not(.a-casa-volanta) {
+  margin: 8px 0 14px;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+}
+@media (max-width: 400px) {
+  .a-casa {
+    grid-template-columns: 1fr;
+  }
+  .a-casa-dibujo {
+    width: 84px;
+  }
+}
+
+/* ---------- Pie ---------- */
+.pie {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 48px 20px 40px;
+  text-align: center;
+}
+.pie-rama {
+  width: 130px;
+}
+.pie-nombre {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.8rem;
+}
+.pie-dato {
+  color: var(--texto-suave);
+}
+.pie-horarios {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+}
+.demo {
+  margin-top: 8px;
+  padding: 0.4em 1em;
+  border-radius: 999px;
+  border: 1px dashed var(--linea-fuerte);
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+}
+.pie .firma {
+  margin-top: 12px;
+}

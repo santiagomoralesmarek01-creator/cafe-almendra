@@ -1,0 +1,523 @@
+/* Café Almendra: base compartida por la web de pedidos y la carta del salón.
+   Papel crema, verde salvia de la marca, rosa de flor de almendro y terracota. Fraunces (serif
+   expresiva con itálicas), Hanken Grotesk (texto) y Caveat (notas a mano). */
+
+:root {
+  color-scheme: light;
+  --marca-claro: #2f5d50;
+  --marca-oscuro: #8cc2ad;
+
+  --fondo: #f6efe2;
+  --papel: #fffaf2;
+  --papel-2: #efe5d2;
+  --texto: #1d2c26;
+  --texto-suave: #56625b;
+  --linea: #dacfbb;
+  --linea-fuerte: #b8ab93;
+  --marca: var(--marca-claro);
+  --marca-hover: #244a40;
+  --sobre-marca: #fbf7ef;
+  --marca-suave: #dde7df;
+  --flor: #f0c7bd;
+  --flor-suave: #f8e2dc;
+  --terracota: #a6462f;
+  --manteca: #f2d58f;
+  --manteca-suave: #f8ebc8;
+  --salvia: #cddbd0;
+  --cielo: #d6e2e6;
+  --exito: #2f6b45;
+  --error: #b3261e;
+  --sombra: 0 1px 0 rgb(60 40 20 / 0.06), 0 12px 32px -18px rgb(60 40 20 / 0.35);
+  --sombra-riso: rgb(214 120 104 / 0.55);
+  --grano-opacidad: 0.38;
+  --grano-mezcla: multiply;
+  --ver-claro: inline-block;
+  --ver-oscuro: none;
+
+  /* Dibujos */
+  --d-tinta: #2b2620;
+  --d-loza: #fffdf8;
+  --d-plato: #e2dacb;
+  --d-cafe: #7a4a2c;
+  --d-cafe-leche: #b88a5d;
+  --d-espresso: #3d2416;
+  --d-crema-cafe: #b07a45;
+  --d-crema: #f7ecd9;
+  --d-cacao: #5b3520;
+  --d-dorado: #e3a851;
+  --d-dorado-osc: #bf7e2e;
+  --d-brillo: #fbe4a9;
+  --d-masa: #ecca8e;
+  --d-masa-osc: #c99a57;
+  --d-nuez: #8a5a35;
+  --d-almendra: #f3e2c4;
+  --d-jamon: #e59a91;
+  --d-palta: #8fae4f;
+  --d-yema: #f2b631;
+  --d-rucula: #5e8a4a;
+  --d-limon: #f3d55b;
+  --d-merengue: #fff6e8;
+  --d-choco: #5a3423;
+  --d-choco-osc: #3a2116;
+  --d-dulce: #b8763c;
+  --d-queso: #f6e7c4;
+  --d-frutos: #c43d4f;
+  --d-frutos-osc: #8e2236;
+  --d-hielo: #d5eaee;
+  --d-sorbete: #2f5d50;
+  --d-limonada: #f2eeb2;
+  --d-naranja: #f4a03a;
+  --d-naranja-osc: #e07f25;
+  --d-te: #b06a2d;
+  --d-tetera: #3f7564;
+  --d-tetera-osc: #2f5d50;
+  --d-flor: #f8d6ce;
+  --d-flor-borde: #d99a8d;
+  --d-flor-centro: #b84a5d;
+  --d-rama: #6e4c3a;
+  --d-hoja: #6c9a78;
+  --d-hoja-osc: #2f5d50;
+  --d-cereza: #c8443a;
+  --d-cereza-osc: #8f2a26;
+  --d-mesa: #e9dcc4;
+  --d-veta: #d9c8aa;
+  --d-servilleta: #f5ddd5;
+  --d-raya: #d98f80;
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mano: "Caveat", "Segoe Print", cursive;
+  --radio: 18px;
+  --ancho: 1180px;
+}
+
+/* Modo oscuro: verde bosque de noche, papel tostado. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --fondo: #111b18;
+    --papel: #18241f;
+    --papel-2: #203029;
+    --texto: #f1e9da;
+    --texto-suave: #b5beb6;
+    --linea: #30423b;
+    --linea-fuerte: #4b6158;
+    --marca: var(--marca-oscuro);
+    --marca-hover: #a6d4c2;
+    --sobre-marca: #0f1f19;
+    --marca-suave: #22372f;
+    --flor: #e8ab9e;
+    --flor-suave: #3a2a27;
+    --terracota: #f0a08b;
+    --manteca: #e7c66f;
+    --manteca-suave: #3a3322;
+    --salvia: #26392f;
+    --cielo: #22323a;
+    --exito: #8cd3a3;
+    --error: #ff9c8f;
+    --sombra: 0 1px 0 rgb(0 0 0 / 0.3), 0 16px 36px -18px rgb(0 0 0 / 0.8);
+    --sombra-riso: rgb(232 150 135 / 0.35);
+    --grano-opacidad: 0.22;
+    --grano-mezcla: screen;
+    --ver-claro: none;
+    --ver-oscuro: inline-block;
+    --d-loza: #f1eadf;
+    --d-plato: #cfc6b6;
+    --d-rama: #b99579;
+    --d-hoja: #77a786;
+    --d-hoja-osc: #a8d3bf;
+    --d-mesa: #2a2620;
+    --d-veta: #352f27;
+    --d-servilleta: #4b3532;
+    --d-raya: #a7685d;
+    --d-flor-borde: #c98376;
+  }
+}
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --fondo: #111b18;
+  --papel: #18241f;
+  --papel-2: #203029;
+  --texto: #f1e9da;
+  --texto-suave: #b5beb6;
+  --linea: #30423b;
+  --linea-fuerte: #4b6158;
+  --marca: var(--marca-oscuro);
+  --marca-hover: #a6d4c2;
+  --sobre-marca: #0f1f19;
+  --marca-suave: #22372f;
+  --flor: #e8ab9e;
+  --flor-suave: #3a2a27;
+  --terracota: #f0a08b;
+  --manteca: #e7c66f;
+  --manteca-suave: #3a3322;
+  --salvia: #26392f;
+  --cielo: #22323a;
+  --exito: #8cd3a3;
+  --error: #ff9c8f;
+  --sombra: 0 1px 0 rgb(0 0 0 / 0.3), 0 16px 36px -18px rgb(0 0 0 / 0.8);
+  --sombra-riso: rgb(232 150 135 / 0.35);
+  --grano-opacidad: 0.22;
+  --grano-mezcla: screen;
+  --ver-claro: none;
+  --ver-oscuro: inline-block;
+  --d-loza: #f1eadf;
+  --d-plato: #cfc6b6;
+  --d-rama: #b99579;
+  --d-hoja: #77a786;
+  --d-hoja-osc: #a8d3bf;
+  --d-mesa: #2a2620;
+  --d-veta: #352f27;
+  --d-servilleta: #4b3532;
+  --d-raya: #a7685d;
+  --d-flor-borde: #c98376;
+}
+
+/* El acento cambia con la hora: manteca a la mañana, flor a la tarde, salvia a la noche. */
+:root,
+:root[data-franja="manana"] {
+  --acento: var(--manteca);
+  --acento-suave: var(--manteca-suave);
+}
+:root[data-franja="tarde"] {
+  --acento: var(--flor);
+  --acento-suave: var(--flor-suave);
+}
+:root[data-franja="noche"] {
+  --acento: #c3d3dd;
+  --acento-suave: var(--cielo);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 84px;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Grano de papel impreso por encima de todo (no intercepta toques). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grano-opacidad);
+  mix-blend-mode: var(--grano-mezcla);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .3 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--serif);
+  font-weight: 500;
+  line-height: 1.05;
+  margin: 0;
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+em {
+  font-style: italic;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--marca);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.logo-claro {
+  display: var(--ver-claro);
+}
+.logo-oscuro {
+  display: var(--ver-oscuro);
+}
+
+.mano {
+  font-family: var(--mano);
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+/* ---------- Botones ---------- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.7em 1.4em;
+  border-radius: 999px;
+  border: 1.5px solid transparent;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.boton:active {
+  transform: translateY(1px) scale(0.98);
+}
+.boton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.boton-marca {
+  background: var(--marca);
+  color: var(--sobre-marca);
+}
+.boton-marca:not(:disabled):hover {
+  background: var(--marca-hover);
+}
+.boton-linea {
+  border-color: var(--texto);
+  background: transparent;
+}
+.boton-linea:not(:disabled):hover {
+  background: var(--texto);
+  color: var(--fondo);
+}
+.boton-chico {
+  min-height: 40px;
+  padding: 0.45em 1em;
+  font-size: 0.92rem;
+}
+
+.boton-tema {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--linea-fuerte);
+  background: var(--papel);
+  cursor: pointer;
+  flex: none;
+}
+.boton-tema svg {
+  width: 20px;
+  height: 20px;
+}
+.boton-tema .icono-sol,
+.boton-tema[aria-pressed="true"] .icono-luna {
+  display: none;
+}
+.boton-tema[aria-pressed="true"] .icono-sol {
+  display: block;
+}
+
+/* ---------- Estado, aviso, etiquetas ---------- */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+  white-space: nowrap;
+}
+.estado::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--linea-fuerte);
+  flex: none;
+}
+.estado.abierto {
+  color: var(--exito);
+}
+.estado.abierto::before {
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 22%, transparent);
+}
+.estado.cerrado {
+  color: var(--terracota);
+}
+.estado.cerrado::before {
+  background: currentColor;
+}
+
+.aviso-dia {
+  display: flex;
+  justify-content: center;
+  gap: 0.75em;
+  align-items: baseline;
+  padding: 0.6em 1rem;
+  background: var(--marca);
+  color: var(--sobre-marca);
+  font-size: 0.95rem;
+  text-align: center;
+}
+.aviso-dia strong {
+  font-family: var(--mano);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.etiqueta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2em 0.6em;
+  border-radius: 999px;
+  border: 1px solid var(--linea-fuerte);
+  color: var(--texto-suave);
+}
+.etiqueta-vegano {
+  border-color: color-mix(in srgb, var(--exito) 60%, transparent);
+  color: var(--exito);
+}
+.etiqueta-sin-tacc {
+  border-color: color-mix(in srgb, var(--terracota) 50%, transparent);
+  color: var(--terracota);
+}
+.etiqueta-agotado {
+  background: var(--texto);
+  border-color: var(--texto);
+  color: var(--fondo);
+}
+
+/* ---------- Imágenes: foto o dibujo, siempre en un arco ---------- */
+.imagen {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: 50% 50% 14px 14px / 40% 40% 14px 14px;
+  overflow: hidden;
+  background: var(--salvia);
+  isolation: isolate;
+}
+.imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.imagen.con-dibujo {
+  display: grid;
+  place-items: center;
+}
+.imagen.con-dibujo svg {
+  width: 84%;
+  height: auto;
+  filter: drop-shadow(3px 3px 0 var(--sombra-riso));
+}
+.imagen-panaderia {
+  background: var(--manteca-suave);
+}
+.imagen-salado {
+  background: color-mix(in srgb, var(--flor) 45%, var(--papel-2));
+}
+.imagen-tortas {
+  background: var(--flor-suave);
+}
+.imagen-bebidas {
+  background: var(--cielo);
+}
+.imagen-desayunos {
+  background: var(--marca-suave);
+}
+.imagen.con-dibujo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(circle at 30% 20%, rgb(255 255 255 / 0.5), transparent 55%);
+}
+
+.firma {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+.firma strong {
+  color: var(--texto);
+}
+
+.sin-datos {
+  max-width: 30ch;
+  margin: 30vh auto;
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 1.4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

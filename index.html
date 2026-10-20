@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6efe2" />
+    <script>
+      // Tema guardado y momento del día antes de pintar, para que no parpadee.
+      try {
+        const tema = localStorage.getItem("tema");
+        if (tema === "claro" || tema === "oscuro") document.documentElement.dataset.tema = tema;
+      } catch {}
+      try {
+        const h = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/Argentina/Buenos_Aires", hour: "2-digit", hourCycle: "h23" }).format(new Date()));
+        document.documentElement.dataset.franja = h >= 5 && h < 12 ? "manana" : h >= 12 && h < 20 ? "tarde" : "noche";
+      } catch {}
+    </script>
+    <title>Café Almendra · Pedí tu desayuno o merienda</title>
+    <meta name="description" content="Café de especialidad tostado en el barrio, medialunas de manteca y tortas caseras. Armá tu desayuno o merienda y pedilo por WhatsApp." />
+    <link rel="icon" type="image/svg+xml" href="/locales/cafe-almendra/marca.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="saltar" href="#armador">Ir a armar tu pedido</a>
+    <div id="aviso-dia" class="aviso-dia" role="status" hidden></div>
+
+    <header class="cabecera">
+      <div class="cabecera-dentro">
+        <a class="cabecera-logo" href="#arriba">
+          <img class="logo-claro" data-logo="logo" width="150" height="40" alt="" hidden />
+          <img class="logo-oscuro" data-logo="oscuro" width="150" height="40" alt="" hidden />
+        </a>
+        <p class="estado cabecera-estado" data-estado hidden></p>
+        <nav class="cabecera-nav" aria-label="Secciones">
+          <a href="#armador" data-momento-nav>Armá tu desayuno</a>
+          <a href="#carta">La carta</a>
+          <a href="#historia">Historia</a>
+          <a href="#visitanos">Horarios</a>
+          <a class="nav-salon" data-carta href="/carta">Carta del salón</a>
+        </nav>
+        <button id="boton-tema" class="boton-tema" type="button" aria-pressed="false" aria-label="Cambiar a modo oscuro">
+          <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z" />
+          </svg>
+          <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="arriba" tabindex="-1">
+      <!-- Portada: saludo según la hora, titular grande y la mesa con la rama de almendro -->
+      <section class="portada" aria-labelledby="titular">
+        <div class="portada-texto">
+          <p class="saludo"><span id="saludo">Buen día</span><span class="saludo-nota mano" id="saludo-nota">desde 2016 en el pasaje</span></p>
+          <h1 id="titular" class="titular"><span id="titular-a">El desayuno,</span> <em id="titular-b">a la vuelta de casa.</em></h1>
+          <p id="eslogan" class="bajada"></p>
+          <div class="portada-acciones">
+            <a id="cta" class="boton boton-marca boton-grande" href="#armador">Armá tu desayuno</a>
+            <a class="boton boton-linea boton-grande" href="#carta">Ver la carta</a>
+          </div>
+          <ul class="portada-datos">
+            <li id="portada-direccion"></li>
+            <li id="portada-envio"></li>
+          </ul>
+        </div>
+        <div class="portada-arte" aria-hidden="true">
+          <div class="portada-sol"></div>
+          <div class="portada-rama" data-rama></div>
+          <div class="portada-taza" id="portada-taza"></div>
+          <div class="portada-plato" id="portada-plato"></div>
+          <p class="portada-nota mano"><span id="portada-nota">medialunas recién salidas</span>
+            <svg viewBox="0 0 80 50" class="flecha"><path d="M4 6 C30 6 56 14 70 40 M70 40 L58 36 M70 40 L72 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /></svg>
+          </p>
+          <svg class="sello" viewBox="0 0 200 200">
+            <defs><path id="circulo-sello" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
+            <circle cx="100" cy="100" r="96" class="sello-fondo" />
+            <text><textPath href="#circulo-sello" startOffset="0">Tostado en el barrio · Desde 2016 ·</textPath></text>
+            <g class="sello-centro" transform="translate(100 100)"><path d="M-14 8c-4-4 4-7 0-14M0 8c-4-4 4-7 0-14M14 8c-4-4 4-7 0-14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" /></g>
+          </svg>
+        </div>
+      </section>
+
+      <div class="cinta" aria-hidden="true"><div class="cinta-dentro" id="cinta"></div></div>
+
+      <!-- Armá tu desayuno / merienda -->
+      <section id="armador" class="seccion armador" aria-labelledby="titulo-armador">
+        <header class="seccion-cabeza">
+          <p class="volanta">Para vos, a tu gusto</p>
+          <h2 id="titulo-armador" class="seccion-titulo">Armá tu <em id="armador-momento">desayuno</em></h2>
+          <p class="seccion-bajada" id="armador-bajada">Una bebida y uno o dos acompañamientos. Juntos, 10&nbsp;% menos que por separado.</p>
+        </header>
+        <div class="armador-cuerpo">
+          <figure class="mesa">
+            <div id="bandeja" class="bandeja"></div>
+            <figcaption>
+              <p class="mesa-pista mano" id="mesa-pista">Elegí una bebida para empezar</p>
+              <ul id="en-la-mesa" class="en-la-mesa" aria-label="Lo que elegiste"></ul>
+            </figcaption>
+          </figure>
+          <div class="armador-panel">
+            <fieldset class="paso">
+              <legend><span class="paso-numero">1</span> Elegí la bebida</legend>
+              <div id="opciones-bebida" class="opciones-combo"></div>
+            </fieldset>
+            <fieldset class="paso">
+              <legend><span class="paso-numero">2</span> Acompañalo con uno o dos</legend>
+              <div id="opciones-acomp" class="opciones-combo"></div>
+            </fieldset>
+            <div class="cuenta-combo">
+              <div aria-live="polite" aria-atomic="true">
+                <p id="combo-nombre" class="combo-nombre">Todavía no elegiste nada.</p>
+                <p class="combo-precios">
+                  <s id="combo-lista" class="combo-lista" hidden></s>
+                  <output id="combo-precio" class="combo-precio">$0</output>
+                  <span id="combo-ahorro" class="ahorro" hidden></span>
+                </p>
+              </div>
+              <div class="cuenta-acciones">
+                <button id="combo-vaciar" class="enlace vaciar" type="button" disabled>Empezar de nuevo</button>
+                <button id="combo-sumar" class="boton boton-marca" type="button" disabled>Sumar al pedido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Desayunos y meriendas fijos -->
+      <section id="de-siempre" class="seccion de-siempre" aria-labelledby="titulo-de-siempre" hidden>
+        <header class="seccion-cabeza">
+          <p class="volanta">Sin pensarlo mucho</p>
+          <h2 id="titulo-de-siempre" class="seccion-titulo">Los <em>de siempre</em></h2>
+          <p class="seccion-bajada" id="de-siempre-bajada"></p>
+        </header>
+        <ul id="de-siempre-lista" class="de-siempre-lista"></ul>
+      </section>
+
+      <!-- La carta completa -->
+      <section id="carta" class="seccion carta" aria-labelledby="titulo-carta">
+        <header class="seccion-cabeza">
+          <p class="volanta">Todo hecho acá</p>
+          <h2 id="titulo-carta" class="seccion-titulo">La <em>carta</em></h2>
+        </header>
+        <nav class="indice" aria-label="Categorías de la carta"><ul id="indice"></ul></nav>
+        <div id="categorias"></div>
+      </section>
+
+      <!-- Nuestra historia -->
+      <section id="historia" class="seccion historia" aria-labelledby="titulo-historia" hidden>
+        <div class="historia-arte" aria-hidden="true" data-rama-cafe></div>
+        <div class="historia-texto">
+          <p class="volanta">Pasaje Las Acacias</p>
+          <h2 id="titulo-historia" class="seccion-titulo">Nuestra <em>historia</em></h2>
+          <div id="historia-parrafos" class="historia-parrafos"></div>
+        </div>
+        <ul id="cifras" class="cifras"></ul>
+      </section>
+
+      <!-- Horarios, dirección y envíos -->
+      <section id="visitanos" class="seccion visitanos" aria-labelledby="titulo-visitanos">
+        <header class="seccion-cabeza">
+          <p class="volanta">Te esperamos</p>
+          <h2 id="titulo-visitanos" class="seccion-titulo">Pasá <em>a vernos</em></h2>
+        </header>
+        <div class="datos">
+          <article class="dato">
+            <h3>Horarios</h3>
+            <ul id="horarios" class="lista-horarios"></ul>
+            <p class="estado" data-estado hidden></p>
+          </article>
+          <article class="dato">
+            <h3>Dónde estamos</h3>
+            <p id="direccion" class="dato-grande"></p>
+            <a id="como-llegar" class="enlace" target="_blank" rel="noopener">Cómo llegar</a>
+          </article>
+          <article class="dato">
+            <h3>Envíos</h3>
+            <p id="envio-texto"></p>
+            <p id="pagos-texto" class="dato-suave"></p>
+          </article>
+        </div>
+        <a class="salon" data-carta href="/carta">
+          <span class="salon-texto"><span class="mano">¿Estás sentado en el café?</span> <strong>Ver la carta del salón</strong></span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </a>
+      </section>
+    </main>
+
+    <footer class="pie">
+      <div class="pie-rama" aria-hidden="true" data-ramita></div>
+      <img class="pie-isotipo" data-logo="isotipo" data-alt="" width="56" height="56" alt="" hidden />
+      <p class="pie-nombre" id="pie-nombre">Café Almendra</p>
+      <p class="pie-dato" id="pie-dato"></p>
+      <p id="demo" class="demo" hidden>Local de demostración: los datos y el WhatsApp son ficticios.</p>
+    </footer>
+
+    <!-- Barra del pedido -->
+    <div id="barra" class="barra" hidden>
+      <div class="barra-dentro">
+        <p class="barra-texto" aria-live="polite"><span id="barra-cantidad"></span> <strong id="barra-total"></strong></p>
+        <button id="abrir-pedido" class="boton boton-marca" type="button" aria-haspopup="dialog">Ver pedido</button>
+      </div>
+    </div>
+
+    <!-- El pedido -->
+    <dialog id="hoja" class="hoja" aria-labelledby="hoja-titulo">
+      <form id="form-pedido" class="hoja-form" method="dialog" novalidate>
+        <header class="hoja-cabeza">
+          <div>
+            <p class="mano hoja-volanta">para llevar</p>
+            <h2 id="hoja-titulo">Tu <em>pedido</em></h2>
+          </div>
+          <button id="cerrar-hoja" class="cerrar" type="button" aria-label="Cerrar el pedido">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          </button>
+        </header>
+        <p id="hoja-cerrado" class="hoja-cerrado" hidden></p>
+        <ul id="lineas" class="lineas" aria-label="Lo que pediste"></ul>
+        <p id="hoja-vacia" class="hoja-vacia" hidden>Todavía no sumaste nada.</p>
+
+        <fieldset class="campo">
+          <legend>¿Cómo lo querés?</legend>
+          <div class="opciones-entrega">
+            <label class="opcion"><input type="radio" name="entrega" value="retiro" checked /><span><strong>Paso a buscarlo</strong><small id="retiro-dato"></small></span></label>
+            <label class="opcion" id="opcion-envio"><input type="radio" name="entrega" value="envio" /><span><strong>Que me lo traigan</strong><small id="envio-dato"></small></span></label>
+          </div>
+        </fieldset>
+
+        <div class="campo" id="campo-direccion" hidden>
+          <label for="direccion-cliente">Dirección</label>
+          <input id="direccion-cliente" name="direccion" autocomplete="street-address" placeholder="Calle, número, piso y timbre" aria-describedby="error-direccion" />
+          <p class="error" id="error-direccion" hidden>Necesitamos la dirección para el envío.</p>
+        </div>
+
+        <div class="campo">
+          <label for="nombre-cliente">Tu nombre</label>
+          <input id="nombre-cliente" name="nombre" autocomplete="name" required aria-describedby="error-nombre" />
+          <p class="error" id="error-nombre" hidden>Decinos tu nombre.</p>
+        </div>
+
+        <fieldset class="campo">
+          <legend>¿Cómo pagás?</legend>
+          <div class="opciones-pago" id="pagos"></div>
+        </fieldset>
+
+        <div class="campo">
+          <label for="aclaraciones">Aclaraciones <small>(opcional)</small></label>
+          <textarea id="aclaraciones" name="aclaraciones" rows="2" placeholder="Leche de almendras, sin azúcar, timbre B…"></textarea>
+        </div>
+
+        <div class="hoja-total">
+          <dl id="cuentas" class="cuentas"></dl>
+          <p class="total"><span>Total</span><output id="hoja-total" aria-live="polite"></output></p>
+        </div>
+        <button id="enviar" class="boton boton-marca boton-enviar" type="submit">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.5-.3Z" /></svg>
+          Enviar por WhatsApp
+        </button>
+        <p id="enviado" class="enviado" role="status" hidden>
+          Se abrió WhatsApp con tu pedido: sólo falta tocar enviar.
+          <button id="nuevo-pedido" class="enlace" type="button">Empezar otro pedido</button>
+        </p>
+      </form>
+    </dialog>
+
+    <div id="tostada" class="tostada" role="status" aria-live="polite"></div>
+    <script type="module" src="/src/web/main.ts"></script>
+  </body>
+</html>

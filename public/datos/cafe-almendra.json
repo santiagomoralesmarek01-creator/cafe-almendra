@@ -1,0 +1,349 @@
+{
+  "slug": "cafe-almendra",
+  "nombre": "Café Almendra",
+  "descripcion": "Café de especialidad, medialunas de manteca y pastelería casera, para tomar acá o llevar.",
+  "sitio": "https://cafe-almendra.vercel.app",
+  "demo": true,
+  "marca": {
+    "logo": "/locales/cafe-almendra/logo.svg",
+    "logoOscuro": "/locales/cafe-almendra/logo-oscuro.svg",
+    "isotipo": "/locales/cafe-almendra/marca.svg",
+    "color": "#2f5d50",
+    "colorOscuro": "#8cc2ad"
+  },
+  "portada": "mesa",
+  "llamado": "cafetera",
+  "eslogan": "Café recién hecho, a la vuelta de casa.",
+  "historia": [
+    "Empezamos en 2016 con una máquina de espresso, cuatro mesas y una fuente de medialunas que se terminaba antes de las diez.",
+    "Hoy tostamos el café en el barrio cada semana y horneamos todo acá: las medialunas salen calentitas a primera hora y las tortas, a la tarde, para la merienda."
+  ],
+  "destacados": [
+    "flat-white",
+    "medialunas-docena",
+    "torta-limon"
+  ],
+  "cifras": [
+    {
+      "valor": "2016",
+      "texto": "abrimos en el barrio"
+    },
+    {
+      "valor": "7",
+      "texto": "días a la semana, desde las 7:30"
+    },
+    {
+      "valor": "15",
+      "texto": "cuadras de envío a domicilio"
+    }
+  ],
+  "cinta": [
+    "Café de especialidad",
+    "Medialunas de manteca",
+    "Tortas caseras",
+    "Desayunos",
+    "Meriendas",
+    "Para llevar"
+  ],
+  "turnos": [
+    {
+      "dias": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "abre": "07:30",
+      "cierra": "20:00"
+    },
+    {
+      "dias": [
+        6,
+        0
+      ],
+      "abre": "09:00",
+      "cierra": "20:00"
+    }
+  ],
+  "whatsapp": "5491162474436",
+  "direccion": "Pasaje Las Acacias 318",
+  "mediosDePago": [
+    "Efectivo",
+    "Transferencia",
+    "Mercado Pago",
+    "Débito"
+  ],
+  "envio": {
+    "disponible": true,
+    "costo": 1200,
+    "zona": "Hasta 15 cuadras"
+  },
+  "categorias": [
+    {
+      "id": "cafe",
+      "nombre": "Café",
+      "ilustracion": "taza",
+      "productos": [
+        {
+          "id": "espresso",
+          "nombre": "Espresso",
+          "precio": 2600,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "cortado",
+          "nombre": "Cortado",
+          "precio": 2900,
+          "etiquetas": [
+            "vegetariano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "flat-white",
+          "nombre": "Flat white",
+          "descripcion": "Doble espresso con leche texturizada.",
+          "precio": 3800,
+          "etiquetas": [
+            "vegetariano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "cafe-con-leche",
+          "nombre": "Café con leche",
+          "descripcion": "En taza grande.",
+          "precio": 3500,
+          "etiquetas": [
+            "vegetariano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "capuccino",
+          "nombre": "Capuccino",
+          "descripcion": "Con cacao o canela.",
+          "precio": 3900,
+          "etiquetas": [
+            "vegetariano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "cold-brew",
+          "nombre": "Cold brew",
+          "descripcion": "Café en frío, 12 horas de infusión.",
+          "precio": 4200,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "panaderia",
+      "nombre": "Medialunas y panadería",
+      "ilustracion": "medialuna",
+      "productos": [
+        {
+          "id": "medialuna",
+          "nombre": "Medialuna de manteca",
+          "precio": 900,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "medialunas-docena",
+          "nombre": "Docena de medialunas",
+          "descripcion": "De manteca o de grasa, recién horneadas.",
+          "precio": 9500,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "croissant",
+          "nombre": "Croissant de almendras",
+          "precio": 3200,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "budin",
+          "nombre": "Budín de banana y nuez",
+          "descripcion": "La porción.",
+          "precio": 2800,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "scon",
+          "nombre": "Scones de queso",
+          "descripcion": "Tres unidades.",
+          "precio": 3000,
+          "etiquetas": [
+            "vegetariano"
+          ],
+          "agotado": true
+        }
+      ]
+    },
+    {
+      "id": "salado",
+      "nombre": "Tostados y salados",
+      "ilustracion": "tostado",
+      "productos": [
+        {
+          "id": "tostado-jyq",
+          "nombre": "Tostado de jamón y queso",
+          "descripcion": "En pan de miga.",
+          "precio": 6200
+        },
+        {
+          "id": "tostado-palta",
+          "nombre": "Tostada de palta",
+          "descripcion": "Pan de masa madre, palta, huevo y semillas.",
+          "precio": 7400,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "cuernito",
+          "nombre": "Cuernito de jamón crudo",
+          "descripcion": "Con queso brie y rúcula.",
+          "precio": 6800
+        }
+      ]
+    },
+    {
+      "id": "tortas",
+      "nombre": "Tortas y dulces",
+      "ilustracion": "porcion",
+      "productos": [
+        {
+          "id": "torta-limon",
+          "nombre": "Lemon pie",
+          "descripcion": "Con merengue italiano, la porción.",
+          "precio": 5200,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "chocotorta",
+          "nombre": "Chocotorta",
+          "descripcion": "La porción.",
+          "precio": 5000,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "cheesecake",
+          "nombre": "Cheesecake de frutos rojos",
+          "descripcion": "La porción.",
+          "precio": 5600,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "alfajor",
+          "nombre": "Alfajor de maicena",
+          "precio": 1800,
+          "etiquetas": [
+            "vegetariano",
+            "sin-tacc"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desayunos",
+      "nombre": "Desayunos y meriendas",
+      "ilustracion": "cafetera",
+      "productos": [
+        {
+          "id": "desayuno-clasico",
+          "nombre": "Clásico",
+          "descripcion": "Café con leche y dos medialunas.",
+          "precio": 5200,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "desayuno-completo",
+          "nombre": "Completo",
+          "descripcion": "Café, jugo de naranja, tostadas con queso crema y mermelada.",
+          "precio": 8400,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        },
+        {
+          "id": "merienda-dos",
+          "nombre": "Merienda para dos",
+          "descripcion": "Dos cafés, dos porciones de torta y un budín.",
+          "precio": 17500,
+          "etiquetas": [
+            "vegetariano"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bebidas",
+      "nombre": "Jugos y bebidas",
+      "ilustracion": "bebida",
+      "productos": [
+        {
+          "id": "jugo-naranja",
+          "nombre": "Jugo de naranja exprimido",
+          "precio": 3600,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "limonada",
+          "nombre": "Limonada con menta y jengibre",
+          "precio": 3900,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "te",
+          "nombre": "Té en hebras",
+          "descripcion": "Negro, verde o de hierbas.",
+          "precio": 2800,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        },
+        {
+          "id": "agua",
+          "nombre": "Agua 500 ml",
+          "precio": 1500,
+          "etiquetas": [
+            "vegano",
+            "sin-tacc"
+          ]
+        }
+      ]
+    }
+  ]
+}
