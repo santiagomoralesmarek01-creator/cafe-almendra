@@ -38,6 +38,8 @@
   --d-tinta: #2b2620;
   --d-loza: #fffdf8;
   --d-plato: #e2dacb;
+  --d-kraft: #c9a173;
+  --d-kraft-osc: #a87d4f;
   --d-cafe: #7a4a2c;
   --d-cafe-leche: #b88a5d;
   --d-espresso: #3d2416;
@@ -123,6 +125,8 @@
     --ver-oscuro: inline-block;
     --d-loza: #f1eadf;
     --d-plato: #cfc6b6;
+    --d-kraft: #a8835a;
+    --d-kraft-osc: #8a6740;
     --d-rama: #b99579;
     --d-hoja: #77a786;
     --d-hoja-osc: #a8d3bf;
@@ -163,6 +167,8 @@
   --ver-oscuro: inline-block;
   --d-loza: #f1eadf;
   --d-plato: #cfc6b6;
+  --d-kraft: #a8835a;
+  --d-kraft-osc: #8a6740;
   --d-rama: #b99579;
   --d-hoja: #77a786;
   --d-hoja-osc: #a8d3bf;

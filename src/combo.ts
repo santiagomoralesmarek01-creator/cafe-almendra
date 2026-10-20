@@ -1,5 +1,6 @@
-// "Armá tu desayuno / merienda": una bebida y uno o dos acompañamientos, con descuento por combo.
-// Sin DOM. El combo viaja en el carrito como un id (combo:<bebida>+<a1>+<a2>) y, para que el núcleo
+// "Armá tu desayuno / merienda": una bebida y uno o dos acompañamientos, con descuento por combo,
+// para tomar en la mesa o para llevar. Sin DOM. El combo viaja en el carrito como un id
+// (combo:<bebida>+<a1>+<a2>, o combo-llevar:… para llevar) y, para que el núcleo
 // (totales y mensaje de WhatsApp) lo entienda sin tocarlo, `localConCombos` agrega una categoría
 // oculta con un producto armado por cada combo del carrito.
 import type { Carrito, Categoria, Local, Producto } from "./nucleo/tipos";
@@ -18,11 +19,15 @@ export const REDONDEO = 100;
 export const CATEGORIA_COMBOS = "combos-armados";
 
 const PREFIJO = "combo:";
+/** Mismo combo, pero para llevar (vaso de cartón y cajitas): otra línea del pedido. */
+const PREFIJO_LLEVAR = "combo-llevar:";
 
 export interface Combo {
   bebida: string;
   /** Ordenados, para que el mismo combo tenga siempre el mismo id. Se pueden repetir (dos medialunas). */
   acompanamientos: string[];
+  /** Para llevar en vez de para tomar en la mesa. */
+  paraLlevar?: boolean;
 }
 
 export type Momento = "desayuno" | "merienda" | "combo";
@@ -30,20 +35,21 @@ export type Momento = "desayuno" | "merienda" | "combo";
 const ROTULOS: Record<Momento, string> = { desayuno: "Desayuno", merienda: "Merienda", combo: "Combo" };
 
 /** El id del combo, o null si no es válido. El orden de los acompañamientos no importa. */
-export function idCombo(bebida: string, acompanamientos: string[]): string | null {
+export function idCombo(bebida: string, acompanamientos: string[], paraLlevar = false): string | null {
   const validos = (s: string) => !!s && !/[+:]/.test(s);
   if (!validos(bebida) || !acompanamientos.every(validos)) return null;
   if (acompanamientos.length < MIN_ACOMPANAMIENTOS || acompanamientos.length > MAX_ACOMPANAMIENTOS) return null;
-  return `${PREFIJO}${[bebida, ...[...acompanamientos].sort()].join("+")}`;
+  return `${paraLlevar ? PREFIJO_LLEVAR : PREFIJO}${[bebida, ...[...acompanamientos].sort()].join("+")}`;
 }
 
 /** Lee un id de combo. null si no es un combo o está mal armado. */
 export function leerCombo(id: string): Combo | null {
-  if (!id.startsWith(PREFIJO)) return null;
-  const [bebida, ...acompanamientos] = id.slice(PREFIJO.length).split("+");
+  const paraLlevar = id.startsWith(PREFIJO_LLEVAR);
+  if (!paraLlevar && !id.startsWith(PREFIJO)) return null;
+  const [bebida, ...acompanamientos] = id.slice((paraLlevar ? PREFIJO_LLEVAR : PREFIJO).length).split("+");
   if (!bebida || acompanamientos.some((a) => !a)) return null;
   if (acompanamientos.length < MIN_ACOMPANAMIENTOS || acompanamientos.length > MAX_ACOMPANAMIENTOS) return null;
-  return { bebida, acompanamientos: [...acompanamientos].sort() };
+  return { bebida, acompanamientos: [...acompanamientos].sort(), paraLlevar };
 }
 
 /** Hora (0–23) en Argentina. */
@@ -88,11 +94,11 @@ export function precioCombo(productos: Producto[]): { lista: number; total: numb
   return { lista, total, ahorro: lista - total };
 }
 
-/** "Desayuno: Flat white + Medialuna de manteca + Tostada de palta" (o "2 Medialuna de manteca"). */
-export function nombreCombo(bebida: Producto, acompanamientos: Producto[], momento: Momento): string {
+/** "Desayuno: Flat white + Medialuna de manteca + Tostada de palta" (o "2 Medialuna de manteca"); "Desayuno para llevar: …". */
+export function nombreCombo(bebida: Producto, acompanamientos: Producto[], momento: Momento, paraLlevar = false): string {
   const [a, b] = acompanamientos;
   const partes = a && b && a.id === b.id ? [`2 ${a.nombre}`] : acompanamientos.map((p) => p.nombre);
-  return `${ROTULOS[momento]}: ${[bebida.nombre, ...partes].join(" + ")}`;
+  return `${ROTULOS[momento]}${paraLlevar ? " para llevar" : ""}: ${[bebida.nombre, ...partes].join(" + ")}`;
 }
 
 /** El producto que representa un combo (para el carrito y el mensaje), o undefined si ya no se puede armar. */
@@ -101,7 +107,7 @@ export function productoCombo(local: Local, id: string, momento: Momento): Produ
   const partes = combo && resolverCombo(local, combo);
   if (!partes) return undefined;
   const todos = [partes.bebida, ...partes.acompanamientos];
-  return { id, nombre: nombreCombo(partes.bebida, partes.acompanamientos, momento), precio: precioCombo(todos).total };
+  return { id, nombre: nombreCombo(partes.bebida, partes.acompanamientos, momento, combo.paraLlevar), precio: precioCombo(todos).total };
 }
 
 /**

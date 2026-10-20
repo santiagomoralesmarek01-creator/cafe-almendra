@@ -209,6 +209,45 @@ const DIBUJOS_BEBIDA: Record<Bebida, () => string> = {
 const envolver = (contenido: string, vb = "-56 -56 112 112", clase = "dibujo") =>
   `<svg class="${clase}" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">${contenido}</svg>`;
 
+// ---------- Para llevar ----------
+
+const FRIAS: Bebida[] = ["cold-brew", "limonada", "jugo", "agua"];
+const LIQUIDO: Partial<Record<Bebida, string>> = {
+  "cold-brew": "var(--d-espresso)",
+  limonada: "var(--d-limonada)",
+  jugo: "var(--d-naranja)",
+  agua: "var(--d-hielo)",
+};
+
+/**
+ * Vaso para llevar visto desde arriba: las calientes con tapa de cartón y piquito; las frías con
+ * tapa transparente (se ve la bebida) y sorbete. Una faja de papel madera con la marca.
+ */
+function vasoParaLlevar(tipo: Bebida) {
+  const faja = `<circle r="38" fill="var(--d-kraft)" ${LINEA}/><circle r="38" fill="none" stroke="var(--d-kraft-osc)" stroke-width="5" stroke-dasharray="3 7" opacity=".55"/>`;
+  if (FRIAS.includes(tipo)) {
+    return `${faja}<circle r="31" fill="${LIQUIDO[tipo]}" opacity=".9" ${LINEA}/><circle r="31" fill="var(--d-loza)" opacity=".28"/>
+      <circle r="24" fill="none" stroke="var(--d-loza)" stroke-width="2" opacity=".7"/>
+      <path d="M8 -8 L34 -40" stroke="var(--d-sorbete)" stroke-width="6" stroke-linecap="round"/><circle cx="8" cy="-8" r="4" fill="var(--d-sorbete)" ${FINA}/>`;
+  }
+  return `${faja}<circle r="31" fill="var(--d-loza)" ${LINEA}/><circle r="25" fill="none" stroke="var(--d-plato)" stroke-width="2"/>
+    <rect x="-9" y="-29" width="18" height="9" rx="4.5" fill="var(--d-tinta)" opacity=".85"/>
+    <path d="M-14 6 C-6 12 6 12 14 6" fill="none" stroke="var(--d-plato)" stroke-width="2" stroke-linecap="round"/>
+    <circle r="3" cx="0" cy="18" fill="var(--d-plato)"/>`;
+}
+
+/** Cajita de papel madera con la pieza adentro (sin el plato). */
+function cajaParaLlevar(tipo: Pieza) {
+  const pieza = DIBUJOS_PIEZA[tipo]().replace(plato(), "");
+  return `<rect x="-50" y="-50" width="100" height="100" rx="8" fill="var(--d-kraft)" ${LINEA}/>
+    <path d="M-50 -34 H50 M-50 34 H50" stroke="var(--d-kraft-osc)" stroke-width="2" opacity=".6"/>
+    <rect x="-42" y="-42" width="84" height="84" rx="5" fill="var(--d-loza)" opacity=".35"/>
+    <g transform="scale(.92)">${pieza}</g>`;
+}
+
+export const grupoBebidaParaLlevar = (tipo: Bebida) => vasoParaLlevar(tipo);
+export const grupoPiezaParaLlevar = (tipo: Pieza) => cajaParaLlevar(tipo);
+
 export const dibujoBebida = (tipo: Bebida) => envolver(DIBUJOS_BEBIDA[tipo]());
 export const dibujoPieza = (tipo: Pieza) => envolver(DIBUJOS_PIEZA[tipo]());
 /** El contenido sin el <svg>, para ubicarlo dentro de la bandeja. */

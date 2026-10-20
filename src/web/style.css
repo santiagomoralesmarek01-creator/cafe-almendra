@@ -283,8 +283,8 @@ main:focus {
 
 .portada-nota {
   position: absolute;
-  left: 2%;
-  bottom: -3%;
+  left: 10%;
+  bottom: -2%;
   z-index: 4;
   display: flex;
   align-items: flex-end;
@@ -297,8 +297,8 @@ main:focus {
 .portada-nota span { max-width: 9ch; }
 .portada-nota .flecha {
   flex: none;
-  width: clamp(48px, 12vw, 70px);
-  margin-bottom: 0.4em;
+  width: clamp(92px, 30vw, 150px);
+  margin-bottom: 0.2em;
 }
 .sello {
   position: absolute;
@@ -444,6 +444,12 @@ main:focus {
   fill: var(--d-tinta);
   fill-opacity: 0.5;
 }
+.bandeja .sello-llevar text {
+  font-family: var(--mano);
+  font-size: 19px;
+  font-weight: 700;
+  fill: var(--d-kraft-osc);
+}
 .bandeja .objeto {
   transform-box: fill-box;
   transform-origin: center;
@@ -522,6 +528,40 @@ main:focus {
   display: grid;
   gap: 26px;
   min-width: 0;
+}
+.modo-combo {
+  justify-self: start;
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1.5px solid var(--linea);
+  background: var(--papel);
+}
+.modo-combo label {
+  position: relative;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.modo-combo input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.modo-combo label:has(input:checked) {
+  background: var(--texto);
+  color: var(--fondo);
+}
+.modo-combo label:has(input:focus-visible) {
+  outline: 3px solid var(--marca);
+  outline-offset: 2px;
 }
 .paso {
   border: 0;

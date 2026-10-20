@@ -19,7 +19,7 @@ import {
   DESCUENTO,
   type Momento,
 } from "../combo";
-import { dibujoBebida, dibujoPieza, flor, grupoBebida, grupoPieza, ramaAlmendro, ramaCafe, ramita, tipoDeBebida, tipoDePieza } from "../dibujos";
+import { dibujoBebida, dibujoPieza, flor, grupoBebida, grupoBebidaParaLlevar, grupoPieza, grupoPiezaParaLlevar, ramaAlmendro, ramaCafe, ramita, tipoDeBebida, tipoDePieza } from "../dibujos";
 import { guardarCarrito, leerCarrito } from "../nucleo/carrito";
 import { cargarLocal, SLUG } from "../nucleo/datos";
 import { $, crear, firma, movimientoReducido } from "../nucleo/dom";
@@ -127,7 +127,7 @@ $("armador-bajada").textContent = `Una bebida y uno o dos acompañamientos. Junt
 
 // ---------- Armá tu desayuno / merienda ----------
 const opciones = opcionesCombo(L);
-const eleccion: { bebida?: string; acomp: string[] } = { acomp: [] };
+const eleccion: { bebida?: string; acomp: string[]; paraLlevar: boolean } = { acomp: [], paraLlevar: false };
 const bebidaPorId = (id?: string) => opciones.bebidas.find((p) => p.id === id);
 const acompPorId = (id: string) => opciones.acompanamientos.find((p) => p.id === id);
 
@@ -154,6 +154,10 @@ function armarArmador() {
   const cajaAcomp = $("opciones-acomp");
   for (const p of opciones.acompanamientos) cajaAcomp.append(opcionCombo(p, "checkbox", dibujoPieza(tipoDePieza(p, categoriaDe.get(p.id)))));
 
+  document.querySelector(".modo-combo")!.addEventListener("change", (e) => {
+    eleccion.paraLlevar = (e.target as HTMLInputElement).value === "llevar";
+    pintarArmador(eleccion.bebida ? "todo" : undefined);
+  });
   cajaBebidas.addEventListener("change", (e) => {
     eleccion.bebida = (e.target as HTMLInputElement).value;
     pintarArmador("bebida");
@@ -181,7 +185,7 @@ function armarArmador() {
   });
   $("combo-sumar").addEventListener("click", () => {
     if (!eleccion.bebida) return;
-    const id = idCombo(eleccion.bebida, eleccion.acomp);
+    const id = idCombo(eleccion.bebida, eleccion.acomp, eleccion.paraLlevar);
     if (!id) return;
     sumar(id, 1, `${rotulo} sumado al pedido.`);
     animar($("bandeja"), "servido");
@@ -199,18 +203,24 @@ function mesaSvg(nuevo?: string): string {
   const bebida = bebidaPorId(eleccion.bebida);
   const acomps = eleccion.acomp.map(acompPorId).filter((p): p is Producto => !!p);
   const vetas = Array.from({ length: 6 }, (_, i) => `<path d="M0 ${36 + i * 66} C140 ${30 + i * 66} 300 ${46 + i * 66} 560 ${34 + i * 66}" stroke="var(--d-veta)" stroke-width="2" fill="none"/>`).join("");
-  const servilleta = `<g transform="translate(104 236) rotate(-9)"><rect x="-118" y="-112" width="236" height="224" rx="6" fill="var(--d-servilleta)"/><rect x="-104" y="-98" width="208" height="196" rx="4" fill="none" stroke="var(--d-raya)" stroke-width="2" stroke-dasharray="7 6"/></g>`;
+  const llevar = eleccion.paraLlevar;
+  const servilleta = llevar
+    ? // Papel madera con el sello del café, en vez de la servilleta.
+      `<g transform="translate(104 236) rotate(-9)"><path d="M-118 -112 L118 -108 L114 112 L-116 110 Z" fill="var(--d-kraft)"/><path d="M-118 -112 L118 -108" stroke="var(--d-kraft-osc)" stroke-width="3" stroke-dasharray="2 5" fill="none"/><g transform="translate(-60 -64) rotate(-12)" class="sello-llevar"><circle r="38" fill="none" stroke="var(--d-kraft-osc)" stroke-width="2.4"/><circle r="31" fill="none" stroke="var(--d-kraft-osc)" stroke-width="1.2"/><text text-anchor="middle" dy="-2">para</text><text text-anchor="middle" dy="16">llevar</text></g></g>`
+    : `<g transform="translate(104 236) rotate(-9)"><rect x="-118" y="-112" width="236" height="224" rx="6" fill="var(--d-servilleta)"/><rect x="-104" y="-98" width="208" height="196" rx="4" fill="none" stroke="var(--d-raya)" stroke-width="2" stroke-dasharray="7 6"/></g>`;
+  const dibBebida = llevar ? grupoBebidaParaLlevar : grupoBebida;
+  const dibPieza = llevar ? grupoPiezaParaLlevar : grupoPieza;
   const rama = `<g transform="translate(470 6) rotate(28)"><path d="M0 0 C10 30 6 60 30 92" stroke="var(--d-rama)" stroke-width="4" fill="none" stroke-linecap="round"/>${flor(6, 24, 12, 10)}${flor(22, 62, 10, 40)}${flor(30, 92, 9, 0)}</g>`;
   const hueco = (x: number, y: number, r: number, texto: string) =>
     `<g transform="translate(${x} ${y})" class="hueco"><circle r="${r}" fill="none" stroke="var(--d-tinta)" stroke-opacity=".35" stroke-width="2" stroke-dasharray="6 8"/><text text-anchor="middle" dy="6">${texto}</text></g>`;
   const ubicar = (clave: keyof typeof LUGARES, contenido: string) => {
     const l = LUGARES[clave];
-    return `<g transform="translate(${l.x} ${l.y}) scale(${l.s})"><g class="objeto${nuevo === clave && !movimientoReducido() ? " aparece" : ""}">${contenido}</g></g>`;
+    return `<g transform="translate(${l.x} ${l.y}) scale(${l.s})"><g class="objeto${(nuevo === clave || nuevo === "todo") && !movimientoReducido() ? " aparece" : ""}">${contenido}</g></g>`;
   };
   const partes = [
-    bebida ? ubicar("bebida", grupoBebida(tipoDeBebida(bebida, categoriaDe.get(bebida.id)))) : hueco(LUGARES.bebida.x, LUGARES.bebida.y, 74, "tu bebida"),
-    acomps[0] ? ubicar("acomp-0", grupoPieza(tipoDePieza(acomps[0], categoriaDe.get(acomps[0].id)))) : hueco(LUGARES["acomp-0"].x, LUGARES["acomp-0"].y, 62, "algo rico"),
-    acomps[1] ? ubicar("acomp-1", grupoPieza(tipoDePieza(acomps[1], categoriaDe.get(acomps[1].id)))) : hueco(LUGARES["acomp-1"].x, LUGARES["acomp-1"].y, 62, acomps[0] ? "¿y otro?" : ""),
+    bebida ? ubicar("bebida", dibBebida(tipoDeBebida(bebida, categoriaDe.get(bebida.id)))) : hueco(LUGARES.bebida.x, LUGARES.bebida.y, 74, "tu bebida"),
+    acomps[0] ? ubicar("acomp-0", dibPieza(tipoDePieza(acomps[0], categoriaDe.get(acomps[0].id)))) : hueco(LUGARES["acomp-0"].x, LUGARES["acomp-0"].y, 62, "algo rico"),
+    acomps[1] ? ubicar("acomp-1", dibPieza(tipoDePieza(acomps[1], categoriaDe.get(acomps[1].id)))) : hueco(LUGARES["acomp-1"].x, LUGARES["acomp-1"].y, 62, acomps[0] ? "¿y otro?" : ""),
   ];
   return `<svg viewBox="0 0 560 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="560" height="400" rx="28" fill="var(--d-mesa)"/>${vetas}${servilleta}${rama}${partes.join("")}</svg>`;
 }
@@ -250,7 +260,9 @@ function pintarArmador(nuevo?: string) {
       ? "¿Y para acompañar?"
       : acomps.length < MAX_ACOMPANAMIENTOS
         ? "Podés sumar uno más"
-        : "Mesa lista";
+        : eleccion.paraLlevar
+          ? "Listo para llevar"
+          : "Mesa lista";
 
   const listo = !!bebida && acomps.length > 0;
   const nombre = $("combo-nombre");
@@ -260,7 +272,7 @@ function pintarArmador(nuevo?: string) {
     const todos = [...(bebida ? [bebida] : []), ...acomps];
     const precio = precioCombo(todos);
     if (listo) {
-      const { titulo, detalle } = partesDelNombre(nombreCombo(bebida, acomps, momento));
+      const { titulo, detalle } = partesDelNombre(nombreCombo(bebida, acomps, momento, eleccion.paraLlevar));
       nombre.replaceChildren(crear("strong", {}, `${titulo}: `), detalle);
       $("combo-precio").textContent = formatearPesos(precio.total);
       lista.textContent = formatearPesos(precio.lista);

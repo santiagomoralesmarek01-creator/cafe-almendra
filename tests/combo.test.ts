@@ -72,8 +72,8 @@ describe("id del combo", () => {
   });
 
   it("se lee de vuelta", () => {
-    expect(leerCombo("combo:flat-white+tostado-palta+medialuna")).toEqual({ bebida: "flat-white", acompanamientos: ["medialuna", "tostado-palta"] });
-    expect(leerCombo("combo:espresso+medialuna+medialuna")).toEqual({ bebida: "espresso", acompanamientos: ["medialuna", "medialuna"] });
+    expect(leerCombo("combo:flat-white+tostado-palta+medialuna")).toEqual({ bebida: "flat-white", acompanamientos: ["medialuna", "tostado-palta"], paraLlevar: false });
+    expect(leerCombo("combo:espresso+medialuna+medialuna")).toEqual({ bebida: "espresso", acompanamientos: ["medialuna", "medialuna"], paraLlevar: false });
     expect(leerCombo("flat-white")).toBeNull();
     expect(leerCombo("combo:flat-white")).toBeNull();
     expect(leerCombo("combo:flat-white+a+b+c")).toBeNull();
@@ -133,6 +133,32 @@ describe("nombre", () => {
   it("se separa para mostrar", () => {
     expect(partesDelNombre("Desayuno: Flat white + Medialuna de manteca")).toEqual({ titulo: "Desayuno", detalle: "Flat white + Medialuna de manteca" });
     expect(partesDelNombre("Espresso")).toEqual({ titulo: "Espresso", detalle: "" });
+  });
+});
+
+describe("para llevar", () => {
+  const llevar = "combo-llevar:flat-white+medialuna+tostado-palta";
+
+  it("es otro id, que se lee de vuelta", () => {
+    expect(idCombo("flat-white", ["tostado-palta", "medialuna"], true)).toBe(llevar);
+    expect(idCombo("flat-white", ["medialuna", "tostado-palta"])).not.toBe(llevar);
+    expect(leerCombo(llevar)).toEqual({ bebida: "flat-white", acompanamientos: ["medialuna", "tostado-palta"], paraLlevar: true });
+    expect(leerCombo("combo-llevar:flat-white")).toBeNull();
+  });
+
+  it("mismo precio, con el aviso en el nombre y en el mensaje", () => {
+    const carrito = [
+      { productoId: llevar, cantidad: 1 },
+      { productoId: "combo:flat-white+medialuna+tostado-palta", cantidad: 1 },
+    ];
+    const l = localConCombos(cafe, carrito, "desayuno");
+    expect(l.categorias.at(-1)!.productos.map((p) => [p.nombre, p.precio])).toEqual([
+      ["Desayuno para llevar: Flat white + Medialuna de manteca + Tostada de palta", 10800],
+      ["Desayuno: Flat white + Medialuna de manteca + Tostada de palta", 10800],
+    ]);
+    const mensaje = armarMensaje(l, carrito, { nombre: "Ana", entrega: "retiro", pago: "Efectivo" });
+    expect(mensaje).toContain("1 x Desayuno para llevar: Flat white + Medialuna de manteca + Tostada de palta");
+    expect(partesDelNombre(l.categorias.at(-1)!.productos[0]!.nombre).titulo).toBe("Desayuno para llevar");
   });
 });
 
