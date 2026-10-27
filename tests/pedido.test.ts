@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { formatearPesos } from "../src/nucleo/formato";
-import { armarMensaje, calcularTotal, cambiarCantidad, cantidadTotal, linkWhatsApp } from "../src/nucleo/pedido";
+import { armarMensaje, calcularTotal, cambiarCantidad, cantidadTotal, linkWhatsApp, negritasDeWhatsApp } from "../src/nucleo/pedido";
 import type { Carrito } from "../src/nucleo/tipos";
 import { localDePrueba as local } from "./fixtures";
 
@@ -99,5 +99,20 @@ describe("linkWhatsApp", () => {
     expect(linkWhatsApp(local.whatsapp, "Hola & chau\n¿2?")).toBe(
       "https://wa.me/5491123456789?text=Hola%20%26%20chau%0A%C2%BF2%3F",
     );
+  });
+});
+
+describe("negritasDeWhatsApp", () => {
+  it("separa los tramos en negrita como WhatsApp", () => {
+    expect(negritasDeWhatsApp("*Pedido* para Ana\n*Total: $1.000*")).toEqual([
+      { texto: "Pedido", negrita: true },
+      { texto: " para Ana\n", negrita: false },
+      { texto: "Total: $1.000", negrita: true },
+    ]);
+  });
+  it("deja igual lo que no tiene asteriscos o los tiene sueltos", () => {
+    expect(negritasDeWhatsApp("2 x Empanada")).toEqual([{ texto: "2 x Empanada", negrita: false }]);
+    expect(negritasDeWhatsApp("a * b")).toEqual([{ texto: "a * b", negrita: false }]);
+    expect(negritasDeWhatsApp("")).toEqual([]);
   });
 });

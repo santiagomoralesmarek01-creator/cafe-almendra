@@ -1704,6 +1704,76 @@ body.hoja-abierta .barra {
   width: 22px;
   height: 22px;
 }
+/* Demo: cómo le llega el pedido al café, con los colores de WhatsApp. */
+:root {
+  --wa-fondo: #efeae2;
+  --wa-burbuja: #d9fdd3;
+  --wa-texto: #111b21;
+}
+:root[data-tema="oscuro"] {
+  --wa-fondo: #0b141a;
+  --wa-burbuja: #005c4b;
+  --wa-texto: #e9edef;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --wa-fondo: #0b141a;
+    --wa-burbuja: #005c4b;
+    --wa-texto: #e9edef;
+  }
+}
+.demo-envio {
+  display: grid;
+  gap: 12px;
+  scroll-margin-top: 16px;
+}
+.demo-envio[hidden] {
+  display: none;
+}
+.demo-envio-titulo {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+}
+.chat {
+  padding: 16px 12px;
+  border-radius: 16px;
+  background: var(--wa-fondo);
+}
+.burbuja {
+  position: relative;
+  max-width: 92%;
+  margin-left: auto;
+  padding: 8px 10px 8px 12px;
+  border-radius: 10px 0 10px 10px;
+  background: var(--wa-burbuja);
+  color: var(--wa-texto);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.12);
+}
+.burbuja::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -8px;
+  width: 8px;
+  height: 12px;
+  background: var(--wa-burbuja);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.demo-envio-nota {
+  font-size: 0.9rem;
+  color: var(--texto-suave);
+}
+.demo-envio .enlace {
+  justify-self: center;
+}
+.demo-envio .boton {
+  text-align: center;
+}
+
 .enviado {
   padding: 14px;
   border-radius: 16px;

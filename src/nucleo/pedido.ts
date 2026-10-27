@@ -70,6 +70,19 @@ export function linkWhatsApp(numero: string, mensaje: string): string {
   return `https://wa.me/${numero.replace(/\D/g, "")}?text=${encodeURIComponent(mensaje)}`;
 }
 
+/** El mensaje partido en tramos normales y en negrita (*así*), como lo muestra WhatsApp. */
+export function negritasDeWhatsApp(texto: string): { texto: string; negrita: boolean }[] {
+  const tramos: { texto: string; negrita: boolean }[] = [];
+  let desde = 0;
+  for (const m of texto.matchAll(/\*([^*\n]+)\*/g)) {
+    if (m.index > desde) tramos.push({ texto: texto.slice(desde, m.index), negrita: false });
+    tramos.push({ texto: m[1]!, negrita: true });
+    desde = m.index + m[0].length;
+  }
+  if (desde < texto.length) tramos.push({ texto: texto.slice(desde), negrita: false });
+  return tramos;
+}
+
 /** Si el local toma pedidos por la carta. El plan Carta muestra la carta sin carrito. */
 export function tomaPedidos(local: Pick<Local, "plan">): boolean {
   return local.plan !== "carta";

@@ -25,7 +25,7 @@ import { cargarLocal, SLUG } from "../nucleo/datos";
 import { $, crear, firma, movimientoReducido } from "../nucleo/dom";
 import { formatearPesos } from "../nucleo/formato";
 import { textoHorarios } from "../nucleo/horario";
-import { armarMensaje, calcularTotal, cambiarCantidad, cantidadTotal, lineasValidas, linkWhatsApp } from "../nucleo/pedido";
+import { armarMensaje, calcularTotal, cambiarCantidad, cantidadTotal, lineasValidas, linkWhatsApp, negritasDeWhatsApp } from "../nucleo/pedido";
 import type { Carrito, Categoria, DatosCliente, Local, Producto } from "../nucleo/tipos";
 
 iniciarTema();
@@ -598,16 +598,33 @@ function armarHoja() {
     } catch {
       /* sin almacenamiento */
     }
-    window.open(linkWhatsApp(L.whatsapp, armarMensaje(lx, carrito, cliente)), "_blank", "noopener");
+    const mensaje = armarMensaje(lx, carrito, cliente);
+    if (L.demo) return mostrarDemo(mensaje);
+    window.open(linkWhatsApp(L.whatsapp, mensaje), "_blank", "noopener");
     $("enviado").hidden = false;
   });
-  $("nuevo-pedido").addEventListener("click", () => {
+  const nuevoPedido = () => {
     carrito = [];
     guardar();
     ($("aclaraciones") as HTMLTextAreaElement).value = "";
+    $("demo-envio").hidden = true;
     hoja.close();
     tostada("Listo, pedido vacío.");
-  });
+  };
+  $("nuevo-pedido").addEventListener("click", nuevoPedido);
+  $("demo-otro").addEventListener("click", nuevoPedido);
+}
+
+/**
+ * En un local de demostración el pedido no sale: se muestra cómo le llegaría al café, como burbuja de
+ * WhatsApp, y un botón para escribirle a quien hace estas webs (el WhatsApp del JSON de la demo).
+ */
+function mostrarDemo(mensaje: string) {
+  $("demo-burbuja").replaceChildren(...negritasDeWhatsApp(mensaje).map((t) => (t.negrita ? crear("strong", {}, t.texto) : document.createTextNode(t.texto))));
+  ($("demo-contacto") as HTMLAnchorElement).href = linkWhatsApp(L.whatsapp, `Hola, vi la demo de ${L.nombre} y quiero una web así para mi local.`);
+  const caja = $("demo-envio");
+  caja.hidden = false;
+  caja.scrollIntoView({ behavior: movimientoReducido() ? "auto" : "smooth", block: "start" });
 }
 
 // ---------- Arranque ----------
