@@ -11,6 +11,13 @@
         const tema = localStorage.getItem("tema");
         if (tema === "claro" || tema === "oscuro") document.documentElement.dataset.tema = tema;
       } catch {}
+      // Animación de entrada sólo la primera vez, y nunca con "reducir movimiento".
+      try {
+        if (!localStorage.getItem("entrada-vista") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.documentElement.classList.add("entrada");
+          localStorage.setItem("entrada-vista", "1");
+        }
+      } catch {}
       try {
         const h = Number(new Intl.DateTimeFormat("en-US", { timeZone: "America/Argentina/Buenos_Aires", hour: "2-digit", hourCycle: "h23" }).format(new Date()));
         document.documentElement.dataset.franja = h >= 5 && h < 12 ? "manana" : h >= 12 && h < 20 ? "tarde" : "noche";

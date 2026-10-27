@@ -279,7 +279,10 @@ export function ramaAlmendro(clase = "rama"): string {
   const flores = [
     flor(200, 70, 15, 10), flor(178, 96, 12, 40), flor(240, 118, 14, -12), flor(296, 92, 13, 20), flor(350, 128, 12, 5),
     flor(330, 58, 11, 33), flor(92, 140, 13, 18), flor(120, 190, 11, -20), flor(370, 38, 10, 0), flor(152, 150, 9, 60), flor(60, 216, 10, 12),
-  ].join("");
+  ]
+    // Cada flor en su grupo con el orden, para que en la entrada de la portada abran de a una.
+    .map((f, i) => `<g class="brote" style="--i:${i}">${f}</g>`)
+    .join("");
   const capullos = [capullo(214, 52, 20), capullo(160, 118, -30, 0.9), capullo(340, 20, 30, 0.8), capullo(272, 98, -40, 0.8), capullo(86, 128, -10, 0.9), capullo(318, 132, 100, 0.8)].join("");
   return `<svg class="${clase}" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">${ramas}${capullos}${flores}</svg>`;
 }

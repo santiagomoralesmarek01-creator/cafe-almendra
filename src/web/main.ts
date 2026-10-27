@@ -194,6 +194,29 @@ function armarArmador() {
     window.setTimeout(() => pintarArmador(), movimientoReducido() ? 0 : 420);
   });
   pintarArmador();
+  seguirArmado();
+}
+
+/**
+ * En el celular, mientras se eligen las opciones, la mesa queda arriba y más chica (clase armando-combo
+ * en el body, ver style.css). Se miden la cabecera y la mesa para saber dónde fijarla y cuánto lugar descontar.
+ */
+function seguirArmado() {
+  if (!("IntersectionObserver" in window)) return;
+  const raiz = document.documentElement.style;
+  new IntersectionObserver(
+    ([e]) => {
+      const armando = !!e?.isIntersecting;
+      if (armando && !document.body.classList.contains("armando-combo")) {
+        raiz.setProperty("--alto-mesa", `${$("bandeja").offsetHeight}px`);
+        raiz.setProperty("--tope-mesa", `${document.querySelector<HTMLElement>(".cabecera")?.offsetHeight ?? 0}px`);
+      }
+      document.body.classList.toggle("armando-combo", armando);
+    },
+    { rootMargin: "-45% 0px -45% 0px" },
+  ).observe(document.querySelector(".armador-panel")!);
+  // Un toque corto al elegir, donde el celular lo permite (Android; en iPhone no hace nada).
+  $("armador").addEventListener("change", () => navigator.vibrate?.(8));
 }
 
 /** Lugar de cada cosa sobre la mesa (centro y escala), en el viewBox 0 0 560 400. */

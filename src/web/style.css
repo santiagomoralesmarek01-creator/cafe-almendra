@@ -255,7 +255,6 @@ main:focus {
   width: 58%;
   z-index: 2;
   filter: drop-shadow(5px 6px 0 var(--sombra-riso));
-  animation: girar-taza 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 .portada-plato {
   position: absolute;
@@ -264,7 +263,6 @@ main:focus {
   width: 40%;
   z-index: 2;
   filter: drop-shadow(4px 5px 0 var(--sombra-riso));
-  animation: entrar-plato 1.2s 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 /* Nota a mano abajo a la izquierda, fuera del círculo, con la flecha hacia el plato. */
 /* En modo oscuro la sombra corrida (de impresión) se ve como un borde sucio: va una sombra suave. */
@@ -326,6 +324,89 @@ main:focus {
   color: var(--marca);
 }
 
+/* Entrada (primera visita, ver el script del <head>): sale el sol, la taza gira hasta su lugar, llega
+   el plato, la rama entra y sus flores abren de a una, rueda el sello y se escribe la nota. Sólo
+   opacidad y transformaciones: la página se puede usar desde el primer momento. */
+.entrada .portada-sol {
+  animation: salir-sol 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.entrada .portada-taza {
+  animation: girar-taza 1.2s 0.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.entrada .portada-plato {
+  animation: entrar-plato 1s 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.entrada .portada-rama {
+  animation: entrar-rama 0.8s 0.15s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.entrada .portada-rama .brote {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: abrir 0.45s calc(0.45s + var(--i, 0) * 70ms) cubic-bezier(0.2, 0.9, 0.3, 1.4) both;
+}
+.entrada .sello {
+  animation:
+    rodar 40s linear infinite,
+    llegar-sello 0.7s 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.entrada .portada-nota {
+  animation: aparecer-nota 0.5s 1s ease both;
+}
+.entrada .portada-nota .flecha path {
+  stroke-dasharray: 200;
+  animation: trazar 0.6s 1.2s ease-out both;
+}
+.entrada .titular span,
+.entrada .titular em,
+.entrada .portada-acciones {
+  animation: subir-texto 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.entrada .titular em {
+  animation-delay: 0.12s;
+}
+.entrada .portada-acciones {
+  animation-delay: 0.3s;
+}
+@keyframes salir-sol {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+@keyframes entrar-rama {
+  from {
+    opacity: 0;
+    transform: translate(-40px, -20px) rotate(-14deg);
+  }
+}
+@keyframes abrir {
+  from {
+    scale: 0;
+    rotate: -60deg;
+  }
+}
+@keyframes llegar-sello {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+@keyframes aparecer-nota {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes trazar {
+  from {
+    stroke-dashoffset: 200;
+  }
+}
+@keyframes subir-texto {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
 @keyframes girar-taza {
   from {
     opacity: 0;
@@ -683,6 +764,46 @@ main:focus {
 .oc-precio {
   font-size: 0.82rem;
   color: var(--texto-suave);
+}
+
+/* Celular: mientras se eligen las opciones (clase armando-combo en el body, desde main.ts), la mesa
+   queda fija arriba y más chica, y lo que se elige aparece a la vista. Se achica con transform y el
+   margen negativo descuenta el lugar libre, para que la página no salte. */
+@media (max-width: 959px) {
+  .mesa {
+    transition: transform 0.3s ease;
+  }
+  .armando-combo .mesa {
+    position: sticky;
+    top: calc(var(--tope-mesa, 60px) + 6px);
+    z-index: 5;
+    transform: scale(0.56);
+    transform-origin: 50% 0;
+    margin-bottom: calc(-0.44 * var(--alto-mesa, 250px) + 8px);
+  }
+  .armando-combo .mesa figcaption {
+    display: none;
+  }
+  /* Franja del color de la sección detrás de la mesa, para que las opciones pasen por abajo. */
+  .armando-combo .mesa::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    width: 190vw;
+    top: calc(-6px / 0.56 - 1px);
+    bottom: -12%;
+    transform: translateX(-50%);
+    background: linear-gradient(var(--acento-suave) 85%, transparent);
+  }
+  .armador {
+    overflow-x: clip;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mesa {
+    transition: none;
+  }
 }
 
 .cuenta-combo {
