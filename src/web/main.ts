@@ -204,17 +204,32 @@ function armarArmador() {
 function seguirArmado() {
   if (!("IntersectionObserver" in window)) return;
   const raiz = document.documentElement.style;
+  const panel = document.querySelector(".armador-panel")!;
+  // Al fijar la mesa la página se corre unos 170 px, y eso podía volver a cruzar el umbral y hacer
+  // titilar la pantalla. Por eso se entra cuando el panel pasa por el medio de la pantalla, se sale
+  // cuando queda casi afuera, y después de salir no se vuelve a entrar hasta que el panel deje el medio.
+  let bloqueado = false;
   new IntersectionObserver(
     ([e]) => {
-      const armando = !!e?.isIntersecting;
-      if (armando && !document.body.classList.contains("armando-combo")) {
-        raiz.setProperty("--alto-mesa", `${$("bandeja").offsetHeight}px`);
-        raiz.setProperty("--tope-mesa", `${document.querySelector<HTMLElement>(".cabecera")?.offsetHeight ?? 0}px`);
+      if (!e?.isIntersecting) {
+        bloqueado = false;
+        return;
       }
-      document.body.classList.toggle("armando-combo", armando);
+      if (bloqueado || document.body.classList.contains("armando-combo")) return;
+      raiz.setProperty("--alto-mesa", `${$("bandeja").offsetHeight}px`);
+      raiz.setProperty("--tope-mesa", `${document.querySelector<HTMLElement>(".cabecera")?.offsetHeight ?? 0}px`);
+      document.body.classList.add("armando-combo");
     },
     { rootMargin: "-45% 0px -45% 0px" },
-  ).observe(document.querySelector(".armador-panel")!);
+  ).observe(panel);
+  new IntersectionObserver(
+    ([e]) => {
+      if (e?.isIntersecting || !document.body.classList.contains("armando-combo")) return;
+      document.body.classList.remove("armando-combo");
+      bloqueado = true;
+    },
+    { rootMargin: "-10% 0px -10% 0px" },
+  ).observe(panel);
   // Un toque corto al elegir, donde el celular lo permite (Android; en iPhone no hace nada).
   $("armador").addEventListener("change", () => navigator.vibrate?.(8));
 }
